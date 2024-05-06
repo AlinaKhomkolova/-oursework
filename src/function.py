@@ -1,6 +1,5 @@
 import json
 from src.classes import Bank
-
 from src.settings import OPERATIONS_PATH
 
 
@@ -9,24 +8,28 @@ def load_operations(path: str = OPERATIONS_PATH):
         data_file = json.load(file)
         operations = []
         for item in data_file:
-            id_operation = item['id']
-            date_operation = item['date']
-            description_operation = item['description']
-            from_operation = item['from']
-            to_operation = item['to']
-            state_operation = item['state']
-            operation_amount_operation = item['operationAmount']
+            date_operation = item.get('date')
+            description_operation = item.get('description')
+            from_operation = item.get('from')
+            to_operation = item.get('to')
+            state_operation = item.get('state')
 
-            amount_operation = operation_amount_operation['amount']
-            code_operation = operation_amount_operation['currency']['code']
+            operation_amount_operation = item.get('operationAmount')
+            amount_operation = item.get('operationAmount', {}).get('amount')
+            code_operation = item.get('operationAmount', {}).get('currency', {}).get('code')
 
-            operation = Bank(id_operation, state_operation, date_operation,
-                                     description_operation, from_operation,
-                                     to_operation, amount_operation, code_operation)
+            operation = Bank(state_operation, date_operation,
+                             description_operation, from_operation,
+                             to_operation, amount_operation, code_operation)
+
             operations.append(operation)
         return operations
 
 
 operations_data = load_operations()
-for i in range(2):
-    print(operations_data)
+
+for operation in operations_data:
+    bank_instance = Bank(operation.state_operation, operation.date_operation,
+                         operation.description_operation, operation.from_operation, operation.to_operation,
+                         operation.amount_operation, operation.code_operation)
+    bank_instance.formatting_string()
