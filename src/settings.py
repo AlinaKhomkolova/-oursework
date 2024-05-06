@@ -1,13 +1,8 @@
-from pathlib import Path
+import os
 
-ROOT_PATH = Path(__file__).parent
+current_dir = os.getcwd()
+OPERATIONS_PATH = os.path.join("/home/alina/course/Coursework/data", "operations.json")
 
-DATA_PATH = ROOT_PATH.joinpath("data")
-OPERATIONS_PATH = DATA_PATH.joinpath("/home/alina/coursework/data/operations.json")
-
-SRC_PATH = ROOT_PATH.joinpath("src")
-CLASS_PATH = SRC_PATH.joinpath("classes.py")
-FUNCTION_PATH = SRC_PATH.joinpath("function.py")
-
-
-MAIN_PATH = ROOT_PATH.joinpath("main.py")
+SRC_PATH = os.path.join("src")
+CLASS_PATH = os.path.join("classes.py")
+FUNCTION_PATH = os.path.join("function.py")
