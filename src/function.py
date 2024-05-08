@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from src.classes import Bank
+from src.operations_with_bank import Bank
 from src.settings import OPERATIONS_PATH
 
 
@@ -43,12 +43,3 @@ def sorted_operation_return_last_five():
             if len(last_five) == 5:
                 break
     return last_five
-
-
-operations_data = sorted_operation_return_last_five()
-
-for operation in operations_data:
-    bank_instance = Bank(operation.state_operation, operation.date_operation,
-                         operation.description_operation, operation.from_operation, operation.to_operation,
-                         operation.amount_operation, operation.code_operation)
-    bank_instance.formatting_string()
