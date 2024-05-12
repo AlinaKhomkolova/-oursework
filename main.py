@@ -1,15 +1,15 @@
-from src.function import sorted_operation_return_last_five
-from src.operations_with_bank import Bank
+from settings import OPERATIONS_COUNT
+from src.utils import load_operations, get_operation_instances, \
+    get_executed_operations, sorted_operations
 
 
 def main():
-    operations_data = sorted_operation_return_last_five()
-
-    for operation in operations_data:
-        bank_instance = Bank(operation.state_operation, operation.date_operation,
-                             operation.description_operation, operation.from_operation, operation.to_operation,
-                             operation.amount_operation, operation.code_operation)
-        bank_instance.formatting_string()
+    operations = load_operations()
+    executed_operations = get_executed_operations(operations)
+    operation_instances = get_operation_instances(executed_operations)
+    sort_operations = sorted_operations(operation_instances)
+    for op in sort_operations[:OPERATIONS_COUNT]:
+        print(op)
 
 
 if __name__ == '__main__':
