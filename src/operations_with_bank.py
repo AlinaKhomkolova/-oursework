@@ -3,7 +3,7 @@ from datetime import datetime
 
 class Bank:
     def __init__(self, state_operation: str, date_operation: str, description_operation: str,
-                 from_operation: str, to_operation: str,
+                 from_operation: str | None, to_operation: str,
                  amount_operation: str, currency_name: str):
         # Статус операции
         self.state_operation = state_operation
@@ -76,8 +76,6 @@ class Bank:
         Возвращает строковое представление объекта Bank.
         :return: Строковое представление объекта Bank.
         """
-        date = self.formatting_date()
-        description = self.description_operation
-        return (f"{date} {description}\n"
+        return (f"{self.formatting_date()} {self.description_operation}\n"
                 f"{self.formatting_from()}{self.formatting_to()}\n"
                 f"{self.amount_operation} {self.currency_name}\n")
