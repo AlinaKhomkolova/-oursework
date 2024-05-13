@@ -30,8 +30,8 @@ def get_executed_operations(operations: list[dict]) -> list[dict]:
 def get_operation_instances(operations: list[dict]) -> list[Bank]:
     """
     Создает экземпляр класса и возвращает список операций
-    :param operations: !!!
-    :return: Список с операциями
+    :param operations: Список словарей операций
+    :return: Список экземпляров класса
     """
     operation_instances = []
     for item in operations:
@@ -41,7 +41,6 @@ def get_operation_instances(operations: list[dict]) -> list[Bank]:
         to_operation = item.get('to')
         state_operation = item.get('state')
 
-        operation_amount_operation = item.get('operationAmount')
         amount_operation = item.get('operationAmount', {}).get('amount')
         code_operation = item.get('operationAmount', {}).get('currency', {}).get(
             'name')
@@ -55,7 +54,7 @@ def get_operation_instances(operations: list[dict]) -> list[Bank]:
 def sorted_operations(operations: list[Bank]) -> list[Bank]:
     """
     Сортирует операции по дате
-    :param operations:
-    :return:
+    :param operations: Список экземпляров класса
+    :return: Отсортированный список экземпляров класса
     """
     return sorted(operations, reverse=True)
