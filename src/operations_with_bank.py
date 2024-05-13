@@ -2,8 +2,8 @@ from datetime import datetime
 
 
 class Bank:
-    def __init__(self, state_operation: str, date_operation: str, description_operation: str,
-                 from_operation: str | None, to_operation: str,
+    def __init__(self, state_operation: str, date_operation: str | None, description_operation: str,
+                 from_operation: str | None, to_operation: str | None,
                  amount_operation: str, currency_name: str):
         # Статус операции
         self.state_operation = state_operation
@@ -25,8 +25,11 @@ class Bank:
         Форматирует дату операции в нужный формат.
         :return: Строка с отформатированной датой операции.
         """
-        date = datetime.strptime(self.date_operation, '%Y-%m-%dT%H:%M:%S.%f')
-        return f"{date:%d.%m.%Y}"
+        if self.date_operation:
+            date = datetime.strptime(self.date_operation, '%Y-%m-%dT%H:%M:%S.%f')
+            return f"{date:%d.%m.%Y}"
+        # Если строка с датой пустая, то вернуть пустую строу
+        return ""
 
     def formatting_from(self):
         """
@@ -34,15 +37,17 @@ class Bank:
         :return: Строка с информацией об отправителе операции.
         """
         if self.from_operation:
+            # Количество цифр для группировки
             number_values_split = 4
             card_number = self.from_operation.split()[-1]
             title_card = " ".join(self.from_operation.split()[:-1])
-
+            # Шифрование счета
             private_number = card_number[:6] + (len(card_number[6:-4]) * "*") + card_number[-4:]
             grouped_private_number = [private_number[i:i + number_values_split] for i in
                                       range(0, len(private_number), number_values_split)]
 
             return f"{title_card} {' '.join(grouped_private_number)} -> "
+        # Если строка со счетом пустая, то вернуть пустую строу
         return ""
 
     def formatting_to(self):
@@ -50,10 +55,12 @@ class Bank:
         Форматирует информацию о получателе операции.
         :return: Строка с информацией о получателе операции.
         """
-        card_number = self.to_operation.split()[-1]
-        title_card = "".join(self.to_operation.split()[:-1])
-        private_number = (len(card_number[:-4]) * "*") + card_number[-4:]
-        return f"{title_card} {private_number}"
+        if self.to_operation:
+            card_number = self.to_operation.split()[-1]
+            title_card = "".join(self.to_operation.split()[:-1])
+            private_number = (len(card_number[:-4]) * "*") + card_number[-4:]
+            return f"{title_card} {private_number}"
+        return ""
 
     def __lt__(self, other):
         """
