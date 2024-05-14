@@ -31,35 +31,30 @@ class Bank:
         # Если строка с датой пустая, то вернуть пустую строу
         return ""
 
-    def formatting_from(self):
+    def formatting_payment(self, payment_data: str):
         """
         Форматирует информацию об отправителе операции.
         :return: Строка с информацией об отправителе операции.
         """
-        if self.from_operation:
+        if payment_data:
             # Количество цифр для группировки
             number_values_split = 4
-            card_number = self.from_operation.split()[-1]
-            title_card = " ".join(self.from_operation.split()[:-1])
+            card_number = payment_data.split()[-1]
+            title_card = " ".join(payment_data.split()[:-1])
             # Шифрование счета
-            private_number = card_number[:6] + (len(card_number[6:-4]) * "*") + card_number[-4:]
-            grouped_private_number = [private_number[i:i + number_values_split] for i in
-                                      range(0, len(private_number), number_values_split)]
+            if title_card == "Счет":
+                private_number_to = f"**{card_number[-4:]}"
+                return f"{title_card} {private_number_to}"
+            # Шифрование номера карты
+            else:
+                private_number_from = (
+                    f"{card_number[:4]}{card_number[6:8]}******{card_number[-4:]}"
+                )
+                grouped_private_number = [private_number_from[i:i + number_values_split] for i in
+                                          range(0, len(private_number_from), number_values_split)]
 
-            return f"{title_card} {' '.join(grouped_private_number)} -> "
+                return f"{title_card} {' '.join(grouped_private_number)}"
         # Если строка со счетом пустая, то вернуть пустую строу
-        return ""
-
-    def formatting_to(self):
-        """
-        Форматирует информацию о получателе операции.
-        :return: Строка с информацией о получателе операции.
-        """
-        if self.to_operation:
-            card_number = self.to_operation.split()[-1]
-            title_card = "".join(self.to_operation.split()[:-1])
-            private_number = (len(card_number[:-4]) * "*") + card_number[-4:]
-            return f"{title_card} {private_number}"
         return ""
 
     def __lt__(self, other):
@@ -83,6 +78,10 @@ class Bank:
         Возвращает строковое представление объекта Bank.
         :return: Строковое представление объекта Bank.
         """
+        if self.from_operation:
+            return (f"{self.formatting_date()} {self.description_operation}\n"
+                    f"{self.formatting_payment(self.from_operation)} -> {self.formatting_payment(self.to_operation)}\n"
+                    f"{self.amount_operation} {self.currency_name}\n")
         return (f"{self.formatting_date()} {self.description_operation}\n"
-                f"{self.formatting_from()}{self.formatting_to()}\n"
+                f"{self.formatting_payment(self.from_operation)}{self.formatting_payment(self.to_operation)}\n"
                 f"{self.amount_operation} {self.currency_name}\n")

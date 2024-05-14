@@ -1,7 +1,7 @@
 from datetime import datetime
-
 from src.operations_with_bank import Bank
 from src.utils import get_executed_operations, sorted_operations, get_operation_instances
+import pytest
 
 
 def test_get_executed_operations():
@@ -47,18 +47,18 @@ def test_instances():
         to_operation=None,
         from_operation=None
     )
-    assert bank.formatting_from() == "Visa Classic 2842 87** **** 9012 -> "
-    assert bank.formatting_to() == "Счет ****************3655"
+    assert bank.formatting_payment(bank.from_operation) == "Visa Classic 2842 88** **** 9012"
+    assert bank.formatting_payment(bank.to_operation) == "Счет **3655"
     assert bank.formatting_date() == "07.12.2019"
     assert str(bank) == (
         "07.12.2019 Перевод организации\n"
-        "Visa Classic 2842 87** **** 9012 -> Счет ****************3655\n"
+        "Visa Classic 2842 88** **** 9012 -> Счет **3655\n"
         "48150.39 USD\n"
     )
 
     assert bank2.formatting_date() == ""
-    assert bank2.formatting_to() == ""
-    assert bank2.formatting_from() == ""
+    assert bank2.formatting_payment(bank2.from_operation) == ""
+    assert bank2.formatting_payment(bank2.to_operation) == ""
     assert str(bank2) == (
         " Перевод\n"
         "\n"
@@ -122,8 +122,8 @@ def test_operation_instance_with_none_from_and_to():
         from_operation=None
     )
 
-    assert bank.formatting_from() == ""
-    assert bank.formatting_to() == ""
+    assert bank.formatting_payment(bank.from_operation) == ""
+    assert bank.formatting_payment(bank.to_operation) == ""
 
 
 def test_sorted_operations():
