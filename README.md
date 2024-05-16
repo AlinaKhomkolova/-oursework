@@ -11,30 +11,30 @@
 ### Инструкция для развертывания проекта:
 
 #### Клонирование проекта:
+```bash
+git clone git@github.com:AlinaKhomkolova/Coursework.git
 ```
-git@github.com:AlinaKhomkolova/Coursework.git
-```
-```
+```bash
 cd Coursework/
 ```
 #### Создать виртуальное окружение:
-```
+```bash
 python -m venv venv
 ```
 #### Активировать виртуальное окружение:
 
 Для Linux
-```
+```bash
 source venv/bin/activate
 ```
 
 Для Windows
-```
+```bash
 venv\Scripts\activate.bat
 ```
 
 #### Установить зависимости:
-```
+```bash
 pip install -r requirements.txt
 ```
 
